@@ -174,6 +174,7 @@ int main(int argc, char* args[])
                             break;
                         case SDLK_ESCAPE:
                             fullscreen ? fullscreen = false : gameRunning = false;
+                            SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
                             break;
                         default:
                             updateFractal = false;
