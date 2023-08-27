@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# App binary
+main
+# Visual Studio Code files
+.vscode
