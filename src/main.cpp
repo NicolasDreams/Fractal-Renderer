@@ -6,20 +6,20 @@ void ScreenToPt(int p_x, int p_y, double& p_px, double& p_py, int p_windowWidth,
     p_py = double(p_y - p_windowHeight / 2) / (p_camZoom  * p_windowHeight) - p_cameraY;
 }
 
-void Mandelbrot(double& p_x, double& p_y, double p_cx, double p_cy) {
+inline void Mandelbrot(double& p_x, double& p_y, double p_cx, double p_cy) {
     double zr = p_x * p_x - p_y * p_y + p_cx;
     double zi = 2.0 * p_x * p_y + p_cy;
     p_x = zr;
     p_y = zi;
 }
-void BurningShip(double& p_x, double& p_y, double p_cx, double p_cy) {
+inline void BurningShip(double& p_x, double& p_y, double p_cx, double p_cy) {
     double zr = p_x * p_x - p_y * p_y + p_cx;
     double zi = 2.0 * std::abs(p_x * p_y) + p_cy;
     p_x = zr;
     p_y = zi;
 }
 
-double ModSquared(double p_x, double p_y)
+inline double ModSquared(double p_x, double p_y)
 {
     return p_x * p_x + p_y * p_y;
 }
@@ -149,13 +149,13 @@ int main(int argc, char* args[])
                             SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
                             break;
                         case SDLK_m:
-                            iterations *= 4;
+                            iterations *= 2;
                             std::cout << "Iterations: " << iterations << "\n";
                             break;
                         case SDLK_n:
-                            iterations /= 4;
-                            if (iterations < 2)
-                                iterations = 2;
+                            iterations /= 2;
+                            if (iterations < 1)
+                                iterations = 1;
                             std::cout << "Iterations: " << iterations << "\n";
                             break;
                         case SDLK_r:
@@ -174,7 +174,7 @@ int main(int argc, char* args[])
                             break;
                         case SDLK_ESCAPE:
                             fullscreen ? fullscreen = false : gameRunning = false;
-                            SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+                            SDL_SetWindowFullscreen(window, 0);
                             break;
                         default:
                             updateFractal = false;
