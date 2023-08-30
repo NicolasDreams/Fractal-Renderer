@@ -1,6 +1,8 @@
 # Fractal Renderer
 A simple fractal renderer written in c++ using SDL2. It currently has Mandelbrot and Burning Ship fractals.
 In the future, I plan to add multithreading, anti-aliasing and more fractals.
+
+Download executable on my itch.io page: https://nicolasdreams.itch.io/fractal-renderer
 ## How to Compile and Run the Project
 ### Linux
 You will need g++ and SDL2. If you are on a deb based distro you can install them by running these commands:

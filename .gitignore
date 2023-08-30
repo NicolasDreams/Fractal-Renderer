@@ -32,6 +32,6 @@
 *.app
 
 # App binary
-main
+bin
 # Visual Studio Code files
 .vscode
