@@ -9,6 +9,7 @@ You will need g++ and SDL2. If you are on a deb based distro you can install the
 ```
 sudo apt-get install g++
 sudo apt-get install libsdl2-2.0
+sudo apt-get install libsdl2-dev
 ```
 Then to compile and run the project, run these commands in the root directory of the project:\
 Debug:
