@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
-void ScreenToPt(int p_x, int p_y, double& p_px, double& p_py, int p_windowWidth, int p_windowHeight, double p_cameraX, double p_cameraY, double p_camZoom) {
+inline void ScreenToPt(int p_x, int p_y, double& p_px, double& p_py, int p_windowWidth, int p_windowHeight, double p_cameraX, double p_cameraY, double p_camZoom) {
     p_px = double(p_x - p_windowWidth / 2) / (p_camZoom  * p_windowHeight) - p_cameraX;
     p_py = double(p_y - p_windowHeight / 2) / (p_camZoom  * p_windowHeight) - p_cameraY;
 }
