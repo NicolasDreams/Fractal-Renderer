@@ -60,11 +60,8 @@ void Render(int p_windowWidth, int p_windowHeight, double p_cameraX, double p_ca
             {
                 Uint8 color = Uint8((float)iterations / p_iterations * 255);
                 SDL_SetRenderDrawColor(p_renderer, color, color / 2, 255 - color / 2, SDL_ALPHA_OPAQUE);
+                SDL_RenderDrawPoint(p_renderer, x, y);
             }
-            else
-                SDL_SetRenderDrawColor(p_renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-
-            SDL_RenderDrawPoint(p_renderer, x, y);
         }
     }
 }
@@ -74,7 +71,7 @@ int main(int argc, char* args[])
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         std::cout << "Failed to init SDL. ERROR: " << SDL_GetError() << "\n";
 
-    SDL_Window* window = SDL_CreateWindow("Fractal Renderer v1.0.1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    SDL_Window* window = SDL_CreateWindow("Fractal Renderer v1.0.2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (window == NULL)
         std::cout << "Failed to create SDL_Window. ERROR: " << SDL_GetError() << "\n";
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
