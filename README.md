@@ -29,10 +29,15 @@ WIP
 ## Controls
 - Left Mouse - Zoom in
 - Right Mouse - Zoom out
-- F11 - Toggle Fullscreen
-- Escape - either switches out to window mode or quits the application
+- F11 - Toggle fullscreen
+- Escape - Either switches out to window mode or quits the application
 - M - Increase iterations
 - N - Decrease iterations
-- R - Return to initial position and iterations (128)
+- X - Increase color rotation speed
+- Z - Decrease color rotation speed
+- V - Increase color offset
+- C - Decrease color offset
+- R - Return to initial position, iterations (128) and colors
 - 1 - Mandelbrot Set
 - 2 - Burning Ship
+- F5 - Manually refresh window
