@@ -46,8 +46,11 @@ int ComputeIterations(double p_z0X, double p_z0Y, double p_constantX, double p_c
     return iteration;
 }
 
-void Render(int p_windowWidth, int p_windowHeight, double p_cameraX, double p_cameraY, double p_cameraZoom, SDL_Renderer* p_renderer, int p_fractal, int p_iterations)
+void Render(int p_windowWidth, int p_windowHeight, double p_cameraX, double p_cameraY, double p_cameraZoom, SDL_Renderer* p_renderer, int p_fractal, int p_iterations, int p_colorRotationSpeed, int p_colorOffset)
 {
+    Uint16 color;
+    Uint8 r, g, b, temp;
+
     for (int y = 0; y < p_windowHeight; ++y)
     {
         for (int x = 0; x < p_windowWidth; ++x)
@@ -56,10 +59,49 @@ void Render(int p_windowWidth, int p_windowHeight, double p_cameraX, double p_ca
             double znY;
             ScreenToPt(x, y, znX, znY, p_windowWidth, p_windowHeight, p_cameraX, p_cameraY, p_cameraZoom);
             int iterations = ComputeIterations(znX, znY, znX, znY, p_fractal, p_iterations);
+
             if (iterations < p_iterations)
             {
-                Uint8 color = Uint8((float)iterations / p_iterations * 255);
-                SDL_SetRenderDrawColor(p_renderer, color, color / 2, 255 - color / 2, SDL_ALPHA_OPAQUE);
+                color = (iterations * p_colorRotationSpeed + p_colorOffset) % 1536;
+                temp = color % 256;
+                if (color < 256)
+                {
+                    r = 255;
+                    g = temp;
+                    b = 0;
+                }
+                else if (color < 512)
+                {
+                    g = 255;
+                    r = 255 - temp;
+                    b = 0;
+                }
+                else if (color < 768)
+                {
+                    g = 255;
+                    b = temp;
+                    r = 0;
+                }
+                else if (color < 1024)
+                {
+                    b = 255;
+                    g = 255 - temp;
+                    r = 0;
+                }
+                else if (color < 1280)
+                {
+                    b = 255;
+                    r = temp;
+                    g = 0;
+                }
+                else
+                {
+                    r = 255;
+                    b = 255 - temp;
+                    g = 0;
+                }
+
+                SDL_SetRenderDrawColor(p_renderer, r, g, b, SDL_ALPHA_OPAQUE);
                 SDL_RenderDrawPoint(p_renderer, x, y);
             }
         }
@@ -71,7 +113,7 @@ int main(int argc, char* args[])
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         std::cout << "Failed to init SDL. ERROR: " << SDL_GetError() << "\n";
 
-    SDL_Window* window = SDL_CreateWindow("Fractal Renderer v1.0.2", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    SDL_Window* window = SDL_CreateWindow("Fractal Renderer v1.1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (window == NULL)
         std::cout << "Failed to create SDL_Window. ERROR: " << SDL_GetError() << "\n";
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -88,6 +130,8 @@ int main(int argc, char* args[])
     double cameraZoom = 0.5;
     int fractal = 1;
     int iterations = 128;
+    int colorRotationSpeed = 5;
+    int colorOffset = 1024;
 
     bool gameRunning = true;
     SDL_Event event;
@@ -152,14 +196,44 @@ int main(int argc, char* args[])
                         case SDLK_n:
                             iterations /= 2;
                             if (iterations < 1)
+                            {
                                 iterations = 1;
+                                updateFractal = false;
+                            }
                             std::cout << "Iterations: " << iterations << "\n";
+                            break;
+                        case SDLK_x:
+                            colorRotationSpeed += 2;
+                            std::cout << "Color Rotation Speed: " << colorRotationSpeed << "\n";
+                            break;
+                        case SDLK_z:
+                            colorRotationSpeed -= 2;
+                            if (colorRotationSpeed < 1)
+                            {
+                                colorRotationSpeed = 1;
+                                updateFractal = false;
+                            }
+                            std::cout << "Color Rotation Speed: " << colorRotationSpeed << "\n";
+                            break;
+                        case SDLK_v:
+                            colorOffset += 128;
+                            if (colorOffset >= 1536)
+                                colorOffset -= 1536;
+                            std::cout << "Color Offset: " << colorOffset << "\n";
+                            break;
+                        case SDLK_c:
+                            colorOffset -= 128;
+                            if (colorOffset < 0)
+                                colorOffset += 1536;
+                            std::cout << "Color Offset: " << colorOffset << "\n";
                             break;
                         case SDLK_r:
                             cameraX = 0.5;
                             cameraY = 0.0;
                             cameraZoom = 0.5;
                             iterations = 128;
+                            colorRotationSpeed = 5;
+                            colorOffset = 1024;
                             break;
                         case SDLK_1:
                             fractal = 1;
@@ -187,7 +261,7 @@ int main(int argc, char* args[])
         {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
             SDL_RenderClear(renderer);
-            Render(windowWidth, windowHeight, cameraX, cameraY, cameraZoom, renderer, fractal, iterations);
+            Render(windowWidth, windowHeight, cameraX, cameraY, cameraZoom, renderer, fractal, iterations, colorRotationSpeed, colorOffset);
             updateFractal = false;
         }
 
