@@ -173,6 +173,8 @@ int main(int argc, char* args[])
                             fullscreen ? fullscreen = false : gameRunning = false;
                             SDL_SetWindowFullscreen(window, 0);
                             break;
+                        case SDLK_F5:
+                            break;
                         default:
                             updateFractal = false;
                             break;
